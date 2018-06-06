@@ -1,0 +1,123 @@
+---
+- name: Install dehydrated dependencies
+  apt: name={{item}}
+  with_items: "{{ dehydrated_dependencies }}"
+
+- name: Checkout dehydrated from github
+  git:
+    repo: "https://github.com/lukas2511/dehydrated.git"
+    update: "{{ dehydrated_update }}"
+    dest: "{{ dehydrated_install_root }}"
+    version: "{{ dehydrated_version }}"
+
+- name: Create /etc/dehydrated
+  file: dest=/etc/dehydrated state=directory owner=root group=root mode=0700
+
+- name: Create wellknown challenge directory
+  file:
+    path: "{{ dehydrated_wellknown }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: dehydrated_wellknown is defined
+
+- name: Generate dehydrated config
+  template:
+    dest: /etc/dehydrated/config
+    src: config.j2
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Generate dehydrated domains.txt
+  copy:
+    dest: /etc/dehydrated/domains.txt
+    content: "{{ dehydrated_domains }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: run dehydrated
+
+# Hooks wrapper
+- name: Copy run-hooks wrapper
+  copy:
+    dest: /etc/dehydrated/run-hooks.pl
+    src: run-hooks.pl
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Create hooks.d
+  file:
+    dest: /etc/dehydrated/hooks.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- block: # Lexicon dns-01
+    - name: Ensure python-pip is installed
+      apt: name=python-pip
+
+    - name: Install dns-lexicon
+      pip:
+        name: dns-lexicon
+
+    - name: Copy hook script
+      copy:
+        dest: /etc/dehydrated/hooks.d/01lexicon
+        src: 01lexicon
+        owner: root
+        group: root
+        mode: "0700"
+  # \block Lexicon dns-01
+  when: 
+    - dehydrated_challengetype == 'dns-01'
+    - dehydrated_use_lexicon
+
+- name: Generate 90deploycert hook
+  template:
+    src: 90deploycert.j2
+    dest: /etc/dehydrated/hooks.d/90deploycert
+    owner: root
+    group: root
+    mode: "0700"
+  when: dehydrated_deploycert is defined
+
+- name: Remove 90deploycert hook
+  file: dest=/etc/dehydrated/hooks.d/90deploycert state=absent
+  when: dehydrated_deploycert is not defined
+
+- name: Install cronjob
+  cron:
+    name: dehydrated-renew
+    minute: "{{ 59|random(seed=inventory_hostname) }}"
+    hour: "{{ 4|random(seed=inventory_hostname) }}"
+    user: root
+    job: "{{ dehydrated_install_root }}/dehydrated -c"
+    cron_file: dehydrated
+  when: dehydrated_cronjob
+
+
+# /opt/dehydrated/dehydrated --register --accept-terms
+- name: Genrate CA urlbase64
+  shell: "echo {{ dehydrated_ca }} | openssl base64 -e | tr -d '\n\r' | sed -e 's:=*$::g' -e 'y:+/:-_:'"
+  check_mode: no
+  changed_when: no
+  register: ca_urlbase64
+
+- name: Check if already registered
+  stat:
+    path: "/etc/dehydrated/accounts/{{ ca_urlbase64.stdout }}"
+  register: ca_stat
+
+- assert:
+    that: dehydrated_accept_letsencrypt_terms
+  when: ca_stat.stat.isdir is defined and not ca_stat.stat.isdir
+
+- name: Register to CA
+  command: "{{ dehydrated_install_root }}/dehydrated --register --accept-terms"
+  when: ca_stat.stat.isdir is defined and not ca_stat.stat.isdir
+
+- meta: flush_handlers

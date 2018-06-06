@@ -1,0 +1,13 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+CHALLENGETYPE="{{ dehydrated_challengetype }}"
+CONTACT_EMAIL="{{ dehydrated_contactemail | mandatory }}"
+KEY_ALGO={{ dehydrated_key_algo }}
+KEYSIZE={{ dehydrated_keysize }}
+{% if dehydrated_wellknown is defined %}WELLKNOWN={{ dehydrated_wellknown }}{% endif %}
+HOOK=/etc/dehydrated/run-hooks.pl
+{% if dehydrated_challengetype == "dns-01" %}
+{% for k, v in dehydrated_lexicon_dns.iteritems() %}
+export {{ k }}={{ v }}
+{% endfor %}
+{% endif %}
+{{ dehydrated_config_extra|default("") }}

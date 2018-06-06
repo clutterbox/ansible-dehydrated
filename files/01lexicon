@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+#
+
+set -e
+set -u
+set -o pipefail
+
+export PROVIDER=${PROVIDER:-"cloudflare"}
+LEXICON=/usr/local/bin/lexicon
+
+function deploy_challenge {
+    local DOMAIN="${1}" TOKEN_FILENAME="${2}" TOKEN_VALUE="${3}"
+    echo " ++ deploy_challenge called: ${DOMAIN}"
+
+    $LEXICON $PROVIDER create ${DOMAIN} TXT --name="_acme-challenge.${DOMAIN}." --content="${TOKEN_VALUE}"
+    sleep 30
+}
+
+function clean_challenge {
+    local DOMAIN="${1}" TOKEN_FILENAME="${2}" TOKEN_VALUE="${3}"
+    echo " ++ clean_challenge called: ${DOMAIN}"
+
+    $LEXICON $PROVIDER delete ${DOMAIN} TXT --name="_acme-challenge.${DOMAIN}." --content="${TOKEN_VALUE}"
+}
+
+HANDLER=$1; shift;
+if [[ "${HANDLER}" =~ ^(deploy_challenge|clean_challenge)$ ]]; then
+    "$HANDLER" "$@"
+fi

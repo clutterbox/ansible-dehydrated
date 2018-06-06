@@ -1,0 +1,25 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+deploy_cert() {
+    local DOMAIN="${1}" KEYFILE="${2}" CERTFILE="${3}" FULLCHAINFILE="${4}" CHAINFILE="${5}" TIMESTAMP="${6}"
+
+{% if dehydrated_deploycert is string %}
+    {{ dehydrated_deploycert }}
+{% else %}
+{% for domain, script in dehydrated_deploycert.iteritems() %}
+    if [[ "${DOMAIN}" = "{{ domain }}" ]]; then
+        {{ script }}
+    fi
+{% endfor %}
+{% endif %}
+}
+
+HANDLER="$1"; shift
+if [[ "${HANDLER}" =~ ^(deploy_cert)$ ]]; then
+    "$HANDLER" "$@"
+fi
