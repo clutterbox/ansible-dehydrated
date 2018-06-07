@@ -71,7 +71,7 @@ TIMESTAMP | Timestamp when the  certificate was created.
 ```yaml
 - hosts: servers
   vars:
-    apt_http_dehydrated_accept_letsencrypt_terms: yes
+    dehydrated_accept_letsencrypt_terms: yes
     dehydrated_contactemail: hostmaster@example.com
     dehydrated_wellknown: /var/www/example.com/.well-known/acme-challenge
     dehydrated_domains: |
@@ -86,7 +86,7 @@ TIMESTAMP | Timestamp when the  certificate was created.
 ```yaml
 - hosts: servers
   vars:
-    apt_http_dehydrated_accept_letsencrypt_terms: yes
+    dehydrated_accept_letsencrypt_terms: yes
     dehydrated_contactemail: hostmaster@example.com
     dehydrated_challengetype: dns-01
     dehydrated_lexicon_dns:
@@ -151,7 +151,7 @@ For Infos on hooks see https://github.com/lukas2511/dehydrated/blob/master/docs/
 
 ## License
 
-MIT Licsense
+MIT License
 
 ## Author Information
 
