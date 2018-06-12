@@ -13,3 +13,4 @@ dehydrated_keysize: 4096
 dehydrated_ca: "https://acme-v02.api.letsencrypt.org/directory"
 dehydrated_cronjob: yes
 dehydrated_use_lexicon: yes
+dehydrated_run_on_changes: yes

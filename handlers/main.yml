@@ -1,3 +1,4 @@
 ---
 - name: run dehydrated
   command: "{{ dehydrated_install_root }}/dehydrated -c"
+  when: dehydrated_run_on_changes

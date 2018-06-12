@@ -23,6 +23,7 @@ dehydrated_keysize | Size of Key (only for rsa Keys) | 4096
 dehydrated_ca | CA to use | https://acme-v02.api.letsencrypt.org/directory
 dehydrated_cronjob | Install cronjob for certificate renewals | yes
 dehydrated_config_extra | Add arbitrary text to config | 
+dehydrated_run_on_changes | If dehydrated should run if the list of domains changed | yes
 
 
 ## Using dns-01 challenges
