@@ -97,8 +97,7 @@
     user: root
     job: "{{ dehydrated_install_root }}/dehydrated -c"
     cron_file: dehydrated
-  when: dehydrated_cronjob
-
+    state: "{{ 'present' if dehydrated_cronjob else 'absent' }}"
 
 # /opt/dehydrated/dehydrated --register --accept-terms
 - name: Genrate CA urlbase64
