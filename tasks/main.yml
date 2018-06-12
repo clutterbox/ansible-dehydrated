@@ -111,12 +111,13 @@
     path: "/etc/dehydrated/accounts/{{ ca_urlbase64.stdout }}"
   register: ca_stat
 
-- assert:
-    that: dehydrated_accept_letsencrypt_terms
-  when: ca_stat.stat.isdir is defined and not ca_stat.stat.isdir
+- block: # block register
+  - assert:
+      that: dehydrated_accept_letsencrypt_terms
 
-- name: Register to CA
-  command: "{{ dehydrated_install_root }}/dehydrated --register --accept-terms"
-  when: ca_stat.stat.isdir is defined and not ca_stat.stat.isdir
+  - name: Register to CA
+    command: "{{ dehydrated_install_root }}/dehydrated --register --accept-terms"
+  # \end block register
+  when: "not ca_stat.stat.exists or (ca_stat.stat.isdir is defined and not ca_stat.stat.isdir)"
 
 - meta: flush_handlers
