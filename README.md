@@ -22,6 +22,7 @@ dehydrated_key_algo | Keytype to generate (rsa, prime256v1, secp384r1) | rsa
 dehydrated_keysize | Size of Key (only for rsa Keys) | 4096
 dehydrated_ca | CA to use | https://acme-v02.api.letsencrypt.org/directory
 dehydrated_cronjob | Install cronjob for certificate renewals | yes
+dehydrated_systemd_timer | Use systemd timer for certificate renewals | no
 dehydrated_config_extra | Add arbitrary text to config | 
 dehydrated_run_on_changes | If dehydrated should run if the list of domains changed | yes
 
@@ -31,6 +32,17 @@ dehydrated_run_on_changes | If dehydrated should run if the list of domains chan
 When dehydrated_challengetype is set to dns-01, this role will automatically install lexicon from python pip to be able to set and remove the necessary DNS-Records needed to obtain an SSL certificate.
 
 lexicon uses environment variables for username and password.
+
+## using systemd timers
+
+It is possible to use a systemd-timer instead of a cronjob to renew certificates.
+
+**Note**: Enabling the systemd timer does *not* disable the cronjob. This might change in the future.
+
+```yaml
+dehydrated_systemd_timer: yes
+dehydrated_cronjob: no
+```
 
 ## dehydrated_deploycert
 
