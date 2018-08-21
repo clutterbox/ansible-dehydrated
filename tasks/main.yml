@@ -72,7 +72,7 @@
         group: root
         mode: "0700"
   # \block Lexicon dns-01
-  when: 
+  when:
     - dehydrated_challengetype == 'dns-01'
     - dehydrated_use_lexicon
 
@@ -100,15 +100,9 @@
     state: "{{ 'present' if dehydrated_cronjob else 'absent' }}"
 
 # /opt/dehydrated/dehydrated --register --accept-terms
-- name: Genrate CA urlbase64
-  shell: "echo {{ dehydrated_ca }} | openssl base64 -e | tr -d '\n\r' | sed -e 's:=*$::g' -e 'y:+/:-_:'"
-  check_mode: no
-  changed_when: no
-  register: ca_urlbase64
-
 - name: Check if already registered
   stat:
-    path: "/etc/dehydrated/accounts/{{ ca_urlbase64.stdout }}"
+    path: "/etc/dehydrated/accounts/{{ ((dehydrated_ca + '\n')|b64encode).rstrip('=').replace('+', '-').replace('/', '_') }}"
   register: ca_stat
 
 - block: # block register
