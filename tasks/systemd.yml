@@ -1,0 +1,29 @@
+---
+
+- name: Upload systemd service files
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/systemd/system/{{ item }}
+  loop:
+    - dehydrated.service
+    - dehydrated.timer
+  when: dehydrated_systemd_timer
+  notify: Reload systemd
+
+- name: Remove system service files
+  file:
+    path: /etc/systemd/system/{{ item }}
+    state: absent
+  loop:
+    - dehydrated.service
+    - dehydrated.timer
+  when: not dehydrated_systemd_timer
+  notify: Remove timer
+
+- name: Activate systemd timer
+  systemd:
+    daemon_reload: yes
+    name: dehydrated.timer
+    enabled: yes
+    state: started
+  when: dehydrated_systemd_timer

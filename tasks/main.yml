@@ -99,6 +99,8 @@
     cron_file: dehydrated
     state: "{{ 'present' if dehydrated_cronjob else 'absent' }}"
 
+- import_tasks: systemd.yml
+
 # /opt/dehydrated/dehydrated --register --accept-terms
 - name: Check if already registered
   stat:

@@ -2,3 +2,12 @@
 - name: run dehydrated
   command: "{{ dehydrated_install_root }}/dehydrated -c"
   when: dehydrated_run_on_changes
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+
+- name: Remove timer
+  systemd:
+    name: dehydrated.timer
+    enabled: no
+    state: stopped
