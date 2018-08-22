@@ -25,7 +25,7 @@ dehydrated_cronjob | Install cronjob for certificate renewals | yes
 dehydrated_systemd_timer | Use systemd timer for certificate renewals | no
 dehydrated_config_extra | Add arbitrary text to config | 
 dehydrated_run_on_changes | If dehydrated should run if the list of domains changed | yes
-
+dehydrated_systemd_timer_onfailure | If set, an OnFailure-Directive will be added to the systemd unit | 
 
 ## Using dns-01 challenges
 
