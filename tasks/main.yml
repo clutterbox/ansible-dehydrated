@@ -76,18 +76,7 @@
     - dehydrated_challengetype == 'dns-01'
     - dehydrated_use_lexicon
 
-- name: Generate 90deploycert hook
-  template:
-    src: 90deploycert.j2
-    dest: /etc/dehydrated/hooks.d/90deploycert
-    owner: root
-    group: root
-    mode: "0700"
-  when: dehydrated_deploycert is defined
-
-- name: Remove 90deploycert hook
-  file: dest=/etc/dehydrated/hooks.d/90deploycert state=absent
-  when: dehydrated_deploycert is not defined
+- import_tasks: hooks.yml
 
 - name: Install cronjob
   cron:

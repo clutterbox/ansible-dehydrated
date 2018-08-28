@@ -15,4 +15,5 @@ dehydrated_cronjob: yes
 dehydrated_use_lexicon: yes
 dehydrated_run_on_changes: yes
 dehydrated_systemd_timer: no
+dehydrated_hook_scripts: []
 # dehydrated_systemd_timer_onfailure: some_unit.service

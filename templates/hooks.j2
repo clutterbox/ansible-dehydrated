@@ -1,0 +1,32 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+#!/usr/bin/env bash
+{% for hook, script in dehydrated_hooks.items() %}
+{{ hook }}() {
+{% if hook == "deploy_challenge" %}
+    local DOMAIN="${1}" TOKEN_FILENAME="${2}" TOKEN_VALUE="${3}"
+{% elif hook == "clean_challenge" %}
+    local DOMAIN="${1}" TOKEN_FILENAME="${2}" TOKEN_VALUE="${3}"
+{% elif hook == "deploy_cert" %}
+    local DOMAIN="${1}" KEYFILE="${2}" CERTFILE="${3}" FULLCHAINFILE="${4}" CHAINFILE="${5}" TIMESTAMP="${6}"
+{% elif hook == "deploy_ocsp" %}
+    local DOMAIN="${1}" OCSPFILE="${2}" TIMESTAMP="${3}"
+{% elif hook == "unchanged_cert" %}
+    local DOMAIN="${1}" KEYFILE="${2}" CERTFILE="${3}" FULLCHAINFILE="${4}" CHAINFILE="${5}"
+{% elif hook == "invalid_challenge" %}
+    local DOMAIN="${1}" RESPONSE="${2}"
+{% elif hook == "request_failure" %}
+    local STATUSCODE="${1}" REASON="${2}" REQTYPE="${3}" HEADERS="${4}"
+{% elif hook == "generate_csr" %}
+    local DOMAIN="${1}" CERTDIR="${2}" ALTNAMES="${3}"
+{% elif hook == "startup_hook" %}
+{% elif hook == "exit_hook" %}
+{% endif %}
+    {{ script }}
+}
+{% endfor %}
+
+
+HANDLER="$1"; shift
+if [[ "${HANDLER}" =~ ^({{ dehydrated_hooks.keys()|join('|') }})$ ]]; then
+  "$HANDLER" "$@"
+fi

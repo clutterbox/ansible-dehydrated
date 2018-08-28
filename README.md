@@ -18,6 +18,8 @@ dehydrated_version | Which version to check out from github | HEAD
 dehydrated_challengetype | Challenge to use (http-01, dns-01) | http-01
 dehydrated_use_lexicon | Use lexicon if challengetype is dns-01 | yes
 dehydrated_lexicon_dns | Options for running lexicon | {}
+dehydrated_hooks | Dict with hook-names for which to add scripts |
+dehydrated_hook_scripts | Add additional scripts to hooks-Directory | []
 dehydrated_key_algo | Keytype to generate (rsa, prime256v1, secp384r1) | rsa
 dehydrated_keysize | Size of Key (only for rsa Keys) | 4096
 dehydrated_ca | CA to use | https://acme-v02.api.letsencrypt.org/directory
@@ -137,30 +139,52 @@ TIMESTAMP | Timestamp when the  certificate was created.
 
 ## Additinal hook scripts
 
-Additional hooks can be put in the /etc/dehydrated/hooks.d directory. Every file will be executed as a dehydrated hook. If you deploy additional hooks with ansible, be sure to deploy them before this role is run. The directory must be created manually in this case.
+This role offers two different ways to deploy additional hooks:
+ * Using shell fragments
+ * by deploying complete hook scripts
 
-Filenames must match ^[a-zA-Z0-9_-]+$
+For Information on how to use these hooks see https://github.com/lukas2511/dehydrated/blob/master/docs/examples/hook.sh
 
-For Infos on hooks see https://github.com/lukas2511/dehydrated/blob/master/docs/examples/hook.sh
+This role follows the example hook script as close as possible.
+
+### Writing shell fragments for single hooks
+
+Single hooks can be written using the `dehydrated_hooks` variable. The variable is a dict where the key is the name of a hook and the value is the shell fragment.
 
 ```yaml
-- hosts: servers
-  tasks:
-    - name: Create hooks.d
-      file:
-        dest: /etc/dehydrated/hooks.d
-        state: directory
-        owner: root
-        group: root
-        mode: 0700
-    - copy:
-        src: myhook
-        dest: dehydrated/hooks.d/myhook
-        mode: 0755
-- hosts: servers
-  roles:
-    - clutterbox.dehydrated
+dehydrated_hooks:
+  exit_hook: |
+    echo "simple cleanup"
+  deploy_ocsp: |
+    cp "${OCSPFILE}" /etc/nginx/ssl/
+    nginx -s reload
 ```
+
+For every known hook, well-know variables are set according to the example hook script (see link above).
+
+### deploying complete hook script files
+
+Additional hooks can be deployed using `dehydrated_hook_scripts` or can be put in the /etc/dehydrated/hooks.d directory manually.
+
+The syntax for `dehydrated_hook_scripts` is as follows:
+
+```yaml
+dehydrated_hook_scripts:
+  - src: # source filename
+    name: # optional filename inside hooks.d. defaults to filename in src
+    state: # state present or absent. defaults to present
+```
+
+If you have a hook-script called myhook in your playbook-directory, it can be deployed like:
+```yaml
+dehydrated_hook_scripts:
+  - src: "{{ playbook_dir }}/myhook"
+```
+
+If you decide, that you don't need the hook anymore, you can add `state: absent` and it will be deleted.
+
+**Note:** Filenames must match ^[a-zA-Z0-9_-]+$ - otherwise they won't be executed!
+
 
 ## License
 
