@@ -2,6 +2,26 @@
 
 Install, configure and run dehydrated Let's Encrypt client
 
+- [clutterbox.dehydrated](#clutterboxdehydrated)
+  * [Role Variables](#role-variables)
+  * [Using dns-01 challenges](#using-dns-01-challenges)
+  * [using systemd timers](#using-systemd-timers)
+  * [Overriding per certificate config](#overriding-per-certificate-config)
+  * [dehydrated_deploycert](#dehydrated-deploycert)
+    + [Variables](#variables)
+  * [Example Playbooks](#example-playbooks)
+    + [Using http-01 .well-known/acme-challenge](#using-http-01-well-known-acme-challenge)
+    + [Using dns-01 with cloudflare](#using-dns-01-with-cloudflare)
+    + [Using dehydrated_deploycert with multiple certificates](#using-dehydrated-deploycert-with-multiple-certificates)
+  * [Additinal hook scripts](#additinal-hook-scripts)
+    + [Writing shell fragments for single hooks](#writing-shell-fragments-for-single-hooks)
+    + [deploying complete hook script files](#deploying-complete-hook-script-files)
+  * [License](#license)
+  * [Author Information](#author-information)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
 
 ## Role Variables
 
@@ -28,6 +48,7 @@ dehydrated_systemd_timer | Use systemd timer for certificate renewals | no
 dehydrated_config_extra | Add arbitrary text to config | 
 dehydrated_run_on_changes | If dehydrated should run if the list of domains changed | yes
 dehydrated_systemd_timer_onfailure | If set, an OnFailure-Directive will be added to the systemd unit | 
+dehydrated_cert_config | Override configuration for certificates | []
 
 ## Using dns-01 challenges
 
@@ -44,6 +65,24 @@ It is possible to use a systemd-timer instead of a cronjob to renew certificates
 ```yaml
 dehydrated_systemd_timer: yes
 dehydrated_cronjob: no
+```
+
+## Overriding per certificate config
+
+The Configration for single certificates can be overridden using `dehydrated_cert_config`.
+
+`dehydrated_cert_config` must be a list of dicts. Only the elemenent `name:` is mandatory ans must match a certificate name. The certificate name is either the first domain listed in domains.txt or the certificate alias, if defined.
+
+Format is as follows:
+
+```yaml
+dehydrated_cert_config:
+ - name: # certificate name or alias (mandatory)
+   state: present # present or absent (optional)
+   challengetype: # override CHALLENGE (optional)
+   wellknown: # override WELLKNOWN (optional)
+   key_algo: # override KEY_ALGO (optional)
+   keysize: # override KEYSIZE (optional)
 ```
 
 ## dehydrated_deploycert

@@ -1,0 +1,28 @@
+---
+- name: Ensure certificate directory exists
+  file: 
+    path: "/etc/dehydrated/certs/{{ item.name }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  loop: "{{ dehydrated_cert_config }}"
+
+- name: Generate per certificate configs
+  template: 
+    dest: "/etc/dehydrated/certs/{{ item.name }}/config"
+    src: certconfig.j2
+    owner: root
+    group: root
+    mode: 0600
+  loop: "{{ dehydrated_cert_config }}"
+  when: item.state|default('present') == "present"
+  notify: run dehydrated
+
+- name: Remove per certificate configs
+  file: 
+    path: "/etc/dehydrated/certs/{{ item.name }}/config"
+    state: absent
+  loop: "{{ dehydrated_cert_config }}"
+  when: item.state|default('present') == "absent"
+  notify: run dehydrated
