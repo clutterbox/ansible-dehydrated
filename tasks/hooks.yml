@@ -1,3 +1,19 @@
+- name: Copy run-hooks wrapper
+  copy:
+    dest: /etc/dehydrated/run-hooks.pl
+    src: run-hooks.pl
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Create hooks.d
+  file:
+    dest: /etc/dehydrated/hooks.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
 - name: Generate 90deploycert hook
   template:
     src: 90deploycert.j2

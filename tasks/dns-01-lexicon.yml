@@ -1,0 +1,14 @@
+- name: Ensure python-pip is installed
+  apt: name=python-pip
+
+- name: Install dns-lexicon
+  pip:
+    name: dns-lexicon
+
+- name: Copy hook script
+  copy:
+    dest: /etc/dehydrated/hooks.d/01lexicon
+    src: 01lexicon
+    owner: root
+    group: root
+    mode: "0700"

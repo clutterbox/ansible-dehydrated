@@ -39,44 +39,13 @@
     mode: 0600
   notify: run dehydrated
 
-# Hooks wrapper
-- name: Copy run-hooks wrapper
-  copy:
-    dest: /etc/dehydrated/run-hooks.pl
-    src: run-hooks.pl
-    owner: root
-    group: root
-    mode: 0700
+- import_tasks: hooks.yml
 
-- name: Create hooks.d
-  file:
-    dest: /etc/dehydrated/hooks.d
-    state: directory
-    owner: root
-    group: root
-    mode: 0700
-
-- block: # Lexicon dns-01
-    - name: Ensure python-pip is installed
-      apt: name=python-pip
-
-    - name: Install dns-lexicon
-      pip:
-        name: dns-lexicon
-
-    - name: Copy hook script
-      copy:
-        dest: /etc/dehydrated/hooks.d/01lexicon
-        src: 01lexicon
-        owner: root
-        group: root
-        mode: "0700"
-  # \block Lexicon dns-01
+- name: Include dns-01-lexicon.yml
+  include_tasks: dns-01-lexicon.yml
   when:
     - dehydrated_challengetype == 'dns-01'
     - dehydrated_use_lexicon
-
-- import_tasks: hooks.yml
 
 - name: Install cronjob
   cron:
