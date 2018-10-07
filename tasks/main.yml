@@ -1,7 +1,6 @@
 ---
 - name: Install dehydrated dependencies
-  apt: name={{item}}
-  with_items: "{{ dehydrated_dependencies }}"
+  apt: name={{ dehydrated_dependencies }}
 
 - name: Checkout dehydrated from github
   git:
