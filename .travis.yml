@@ -9,7 +9,7 @@ install:
   - mkdir -p $GOPATH
   - git clone https://github.com/letsencrypt/boulder/ $GOPATH/src/github.com/letsencrypt/boulder
   - cd $GOPATH/src/github.com/letsencrypt/boulder
-  - "echo -e \"version: '3.0'\nservices: {boulder: {environment: {FAKE_DNS: 10.77.77.1}}}\" > docker-compose.override.yml"
+  - "echo -e \"version: '3.0'\\nservices: {boulder: {environment: {FAKE_DNS: 10.77.77.1}}}\" > docker-compose.override.yml"
   - docker-compose up -d
   - until curl http://127.0.0.1:4001/directory; do sleep 0.5; done
   - cd -
