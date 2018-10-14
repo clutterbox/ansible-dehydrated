@@ -4,7 +4,8 @@
   when: dehydrated_run_on_changes
 
 - name: Reload systemd
-  command: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
 
 - name: Remove timer
   systemd:

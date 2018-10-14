@@ -1,3 +1,4 @@
+---
 - name: Ensure python-pip is installed
   apt: name=python-pip
 

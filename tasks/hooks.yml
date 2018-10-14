@@ -1,3 +1,4 @@
+---
 - name: Copy run-hooks wrapper
   copy:
     dest: /etc/dehydrated/run-hooks.pl
