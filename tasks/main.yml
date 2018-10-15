@@ -66,12 +66,13 @@
     path: "/etc/dehydrated/accounts/{{ ((dehydrated_ca + '\n')|b64encode).rstrip('=').replace('+', '-').replace('/', '_') }}"
   register: ca_stat
 
-- block: # block register
-  - assert:
-      that: dehydrated_accept_letsencrypt_terms
+- block:
+    - name: "assert dehydrated_accept_letsencrypt_terms is true"
+      assert:
+        that: dehydrated_accept_letsencrypt_terms
 
-  - name: Register to CA
-    command: "{{ dehydrated_install_root }}/dehydrated --register --accept-terms"
+    - name: Register to CA
+      command: "{{ dehydrated_install_root }}/dehydrated --register --accept-terms"
   # \end block register
   when: "not ca_stat.stat.exists or (ca_stat.stat.isdir is defined and not ca_stat.stat.isdir)"
 

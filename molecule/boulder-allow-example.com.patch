@@ -1,0 +1,13 @@
+diff --git a/ra/ra.go b/ra/ra.go
+index a55bb11..88d0a33 100644
+--- a/ra/ra.go
++++ b/ra/ra.go
+@@ -366,7 +366,7 @@ var (
+ // registration if allowed.
+ var forbiddenMailDomains = map[string]bool{
+ 	// https://tools.ietf.org/html/rfc2606#section-3
+-	"example.com": true,
++	"example.com": false,
+ 	"example.net": true,
+ 	"example.org": true,
+ }

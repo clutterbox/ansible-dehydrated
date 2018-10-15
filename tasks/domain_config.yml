@@ -1,6 +1,6 @@
 ---
 - name: Ensure certificate directory exists
-  file: 
+  file:
     path: "/etc/dehydrated/certs/{{ item.name }}"
     state: directory
     owner: root
@@ -9,7 +9,7 @@
   loop: "{{ dehydrated_cert_config }}"
 
 - name: Generate per certificate configs
-  template: 
+  template:
     dest: "/etc/dehydrated/certs/{{ item.name }}/config"
     src: certconfig.j2
     owner: root
@@ -20,7 +20,7 @@
   notify: run dehydrated
 
 - name: Remove per certificate configs
-  file: 
+  file:
     path: "/etc/dehydrated/certs/{{ item.name }}/config"
     state: absent
   loop: "{{ dehydrated_cert_config }}"
