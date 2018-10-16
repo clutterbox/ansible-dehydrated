@@ -22,4 +22,8 @@ my @list = sort map { "$hooks/$_"; } grep { /^[0-9a-zA-Z-_]/ } readdir($dh);
 foreach (@list) {
         print " ++ running hook $_\n";
         system($_, @ARGV);
+        my $rc = $? >> 8;
+        if ( $rc != 0 ) {
+                exit $rc;
+        }
 }
