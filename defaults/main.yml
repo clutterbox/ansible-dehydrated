@@ -3,6 +3,7 @@ dehydrated_dependencies:
   - git
   - openssl
   - curl
+dehydrated_pip_package: python-pip
 dehydrated_install_root: /opt/dehydrated
 dehydrated_update: yes
 dehydrated_version: HEAD

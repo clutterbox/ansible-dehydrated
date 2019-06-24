@@ -1,10 +1,11 @@
 ---
 - name: Ensure python-pip is installed
-  apt: name=python-pip
+  apt: name="{{ dehydrated_pip_package }}"
 
 - name: Install dns-lexicon
   pip:
     name: dns-lexicon
+    executable: "{{ dehydrated_pip_executable|default(omit) }}"
 
 - name: Copy hook script
   copy:
