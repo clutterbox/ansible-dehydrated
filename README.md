@@ -49,6 +49,7 @@ dehydrated_config_extra | Add arbitrary text to config |
 dehydrated_run_on_changes | If dehydrated should run if the list of domains changed | yes
 dehydrated_systemd_timer_onfailure | If set, an OnFailure-Directive will be added to the systemd unit | 
 dehydrated_cert_config | Override configuration for certificates | []
+dehydrated_repo_url | Specify URL to git repository of dehydrated | https://github.com/lukas2511/dehydrated.git
 
 ## Using dns-01 challenges
 
