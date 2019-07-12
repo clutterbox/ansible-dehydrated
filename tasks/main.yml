@@ -4,7 +4,7 @@
 
 - name: Checkout dehydrated from github
   git:
-    repo: "https://github.com/lukas2511/dehydrated.git"
+    repo: "{{ dehydrated_repo_url }}"
     update: "{{ dehydrated_update }}"
     dest: "{{ dehydrated_install_root }}"
     version: "{{ dehydrated_version }}"
