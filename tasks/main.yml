@@ -45,7 +45,6 @@
 - name: Include dns-01-lexicon.yml
   include_tasks: dns-01-lexicon.yml
   when:
-    - dehydrated_challengetype == 'dns-01'
     - dehydrated_use_lexicon
 
 - name: Install cronjob

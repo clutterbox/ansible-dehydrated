@@ -36,7 +36,7 @@ dehydrated_install_root | Where to install dehydrated | /opt/dehydrated
 dehydrated_update | Update dehydrated sources on ansible run | yes
 dehydrated_version | Which version to check out from github | HEAD
 dehydrated_challengetype | Challenge to use (http-01, dns-01) | http-01
-dehydrated_use_lexicon | Use lexicon if challengetype is dns-01 | yes
+dehydrated_use_lexicon | Enable the use of lexicon | yes if dehydrated_challengetype == dns-01 else no
 dehydrated_lexicon_dns | Options for running lexicon | {}
 dehydrated_hooks | Dict with hook-names for which to add scripts |
 dehydrated_hook_scripts | Add additional scripts to hooks-Directory | []
