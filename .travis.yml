@@ -5,7 +5,7 @@ env:
   - GOPATH=~/gopath
 
 install:
-  - pip install molecule docker
+  - pip install "molecule>=2.22rc3" docker
   - mkdir -p $GOPATH
   - git clone https://github.com/letsencrypt/boulder/ $GOPATH/src/github.com/letsencrypt/boulder
   - cd $GOPATH/src/github.com/letsencrypt/boulder

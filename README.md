@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/clutterbox/ansible-dehydrated.svg?branch=master)](https://travis-ci.com/clutterbox/ansible-dehydrated)
+
 # clutterbox.dehydrated
 
 Install, configure and run dehydrated Let's Encrypt client
