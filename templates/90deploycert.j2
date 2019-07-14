@@ -11,7 +11,7 @@ deploy_cert() {
 {% if dehydrated_deploycert is string %}
     {{ dehydrated_deploycert }}
 {% else %}
-{% for domain, script in dehydrated_deploycert.iteritems() %}
+{% for domain, script in dehydrated_deploycert.items() %}
     if [[ "${DOMAIN}" = "{{ domain }}" ]]; then
         {{ script }}
     fi

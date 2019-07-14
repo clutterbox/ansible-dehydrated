@@ -9,7 +9,7 @@ WELLKNOWN={{ dehydrated_wellknown }}
 {% endif %}
 HOOK=/etc/dehydrated/run-hooks.pl
 {% if dehydrated_challengetype == "dns-01" %}
-{% for k, v in dehydrated_lexicon_dns.iteritems() %}
+{% for k, v in dehydrated_lexicon_dns.items() %}
 export {{ k }}={{ v }}
 {% endfor %}
 {% endif %}
