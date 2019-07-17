@@ -1,26 +1,12 @@
 ---
 language: python
 services: docker
+dist: xenial
 env:
   - GOPATH=~/gopath
 
 install:
-  - pip install "molecule>=2.22rc3" docker
-  - mkdir -p $GOPATH
-  - git clone https://github.com/letsencrypt/boulder/ $GOPATH/src/github.com/letsencrypt/boulder
-  - cd $GOPATH/src/github.com/letsencrypt/boulder
-  - patch -p1 < $TRAVIS_BUILD_DIR/molecule/boulder-allow-example.com.patch
-  - "echo -e \"version: '3.0'\\nservices: {boulder: {environment: {FAKE_DNS: 10.77.77.1}}}\" > docker-compose.override.yml"
-  - docker-compose up -d
-  - until curl http://127.0.0.1:4001/directory; do sleep 0.5; done
-  - cd -
-  - mkdir -p /tmp/www/.well-known/acme-challenge
-  - docker run --rm -d -v /tmp/www:/usr/share/nginx/html:ro -p 10.77.77.1:5002:80 nginx
-
-before_script:
-  - cd ..
-  - mv ansible-dehydrated clutterbox.dehydrated
-  - cd clutterbox.dehydrated
+  - ./molecule/setup.sh
 
 script:
   - molecule test

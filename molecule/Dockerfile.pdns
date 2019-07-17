@@ -1,0 +1,9 @@
+FROM ubuntu:bionic
+ADD     pdns.conf /etc/powerdns/pdns.conf
+RUN     apt-get update && \
+        echo "pdns-backend-sqlite3 pdns-backend-sqlite3/dbconfig-install boolean true" | debconf-set-selections && \
+        apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install pdns-server pdns-backend-sqlite3 sqlite3 && \
+        apt-get clean
+
+EXPOSE  8081 53 53/udp
+CMD     ["/usr/sbin/pdns_server", "--guardian=no", "--daemon=no", "--disable-syslog", "--log-timestamp=no", "--write-pid=no"]

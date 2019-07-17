@@ -231,10 +231,22 @@ If you decide, that you don't need the hook anymore, you can add `state: absent`
 **Note:** Filenames must match ^[a-zA-Z0-9_-]+$ - otherwise they won't be executed!
 
 
-## License
+# Testing
+
+This role is automatically tested using Travis CI. Local testing can be done using Vagrant. Both run `molecule/setup.sh` script to setup the testing environment.
+
+Multiple services are started in the environment to test both http-01 and dns-01.
+
+Service | Usage
+---|---
+boulder (using docker) | Let's Encrypt CA for validations
+nginx | webserver for http-01
+powerdns | Used as a nameserver for dns-01. lexicon as a plugin to manipulate records.
+
+# License
 
 MIT License
 
-## Author Information
+# Author Information
 
 Alexander Zielke - mail@alexander.zielke.name

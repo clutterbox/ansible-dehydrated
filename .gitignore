@@ -1,2 +1,4 @@
 .vscode
 *.code-workspace
+.vagrant/
+*.log

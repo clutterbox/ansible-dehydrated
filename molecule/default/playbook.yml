@@ -1,14 +1,5 @@
 ---
 - name: Converge
   hosts: all
-  vars:
-    dehydrated_contactemail: notused@example.com
-    dehydrated_accept_letsencrypt_terms: true
-    dehydrated_domains: |
-      example.com www.example.com
-    dehydrated_wellknown: /tmp/www/.well-known/acme-challenge
-    dehydrated_use_lexicon: false
-    dehydrated_ca: http://10.77.77.1:4001/directory
-    dehydrated_cronjob: false
   roles:
-    - role: clutterbox.dehydrated
+    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"

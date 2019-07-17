@@ -6,14 +6,75 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
-    image: ubuntu:16.04
+  - name: ubuntu1804-http01
+    image: ubuntu:18.04
+    groups: [http01]
     volumes:
       - "/tmp/www:/tmp/www"
+  - name: ubuntu1604-http01
+    image: ubuntu:16.04
+    groups: [http01]
+    volumes:
+      - "/tmp/www:/tmp/www"
+  - name: debian8-http01
+    image: debian:8
+    groups: [http01]
+    volumes:
+      - "/tmp/www:/tmp/www"
+  - name: debian9-http01
+    image: debian:9
+    groups: [http01]
+    volumes:
+      - "/tmp/www:/tmp/www"
+  - name: debian10-http01
+    image: debian:10
+    groups: [http01]
+    volumes:
+      - "/tmp/www:/tmp/www"
+  - name: ubuntu1804-dns01
+    image: ubuntu:18.04
+    groups: [dns01]
+  - name: ubuntu1604-dns01
+    image: ubuntu:16.04
+    groups: [dns01]
+  - name: debian8-dns01
+    image: debian:8
+    groups: [dns01]
+  - name: debian9-dns01
+    image: debian:9
+    groups: [dns01]
+  - name: debian10-dns01
+    image: debian:10
+    groups: [dns01]
 provisioner:
   name: ansible
   lint:
     name: ansible-lint
+  inventory:
+    group_vars:
+      http01:
+        dehydrated_contactemail: notused@le2.wtf
+        dehydrated_accept_letsencrypt_terms: true
+        dehydrated_domains: |
+          le2.wtf
+        dehydrated_wellknown: /tmp/www/.well-known/acme-challenge
+        dehydrated_use_lexicon: false
+        dehydrated_ca: http://10.77.77.1:4001/directory
+        dehydrated_cronjob: false
+      dns01:
+        dehydrated_contactemail: notused@le3.wtf
+        dehydrated_accept_letsencrypt_terms: true
+        dehydrated_domains: |
+          le3.wtf
+        dehydrated_challengetype: dns-01
+        dehydrated_ca: http://10.77.77.1:4001/directory
+        dehydrated_cronjob: false
+        dehydrated_wellknown: /tmp/www/.well-known/acme-challenge
+        dehydrated_lexicon_dns:
+          PROVIDER: powerdns
+          LEXICON_POWERDNS_PDNS_SERVER: http://10.77.77.1:8081
+          LEXICON_POWERDNS_PDNS_SERVER_ID: localhost
+          LEXICON_POWERDNS_TOKEN: dummy
 scenario:
   name: default
 verifier:
