@@ -3,7 +3,7 @@ dehydrated_dependencies:
   - git
   - openssl
   - curl
-dehydrated_repo_url: https://github.com/lukas2511/dehydrated.git
+dehydrated_repo_url: https://github.com/dehydrated-io/dehydrated.git
 dehydrated_install_root: /opt/dehydrated
 dehydrated_update: yes
 dehydrated_version: HEAD
