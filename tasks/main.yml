@@ -59,20 +59,6 @@
 
 - import_tasks: systemd.yml
 
-# /opt/dehydrated/dehydrated --register --accept-terms
-- name: Check if already registered
-  stat:
-    path: "/etc/dehydrated/accounts/{{ ((dehydrated_ca + '\n')|b64encode).rstrip('=').replace('+', '-').replace('/', '_') }}"
-  register: ca_stat
-
-- block:
-    - name: "assert dehydrated_accept_letsencrypt_terms is true"
-      assert:
-        that: dehydrated_accept_letsencrypt_terms
-
-    - name: Register to CA
-      command: "{{ dehydrated_install_root }}/dehydrated --register --accept-terms"
-  # \end block register
-  when: "not ca_stat.stat.exists or (ca_stat.stat.isdir is defined and not ca_stat.stat.isdir)"
+- import_tasks: registration.yml
 
 - meta: flush_handlers

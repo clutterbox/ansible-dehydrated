@@ -1,4 +1,10 @@
 ---
+
+# This handler needs to be defined before "run dehydrated",
+# as handlers run in the order __defined__, not _called__.
+- name: update account details
+  command: "{{ dehydrated_install_root }}/dehydrated --account"
+
 - name: run dehydrated
   command: "{{ dehydrated_install_root }}/dehydrated -c"
   when: dehydrated_run_on_changes
