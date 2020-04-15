@@ -3,8 +3,6 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
 platforms:
   - name: ubuntu1804-http01
     image: ubuntu:18.04
@@ -37,9 +35,9 @@ platforms:
   - name: ubuntu1604-dns01
     image: ubuntu:16.04
     groups: [dns01]
-  - name: debian8-dns01
-    image: debian:8
-    groups: [dns01]
+  # - name: debian8-dns01
+  #   image: debian:8
+  #   groups: [dns01]
   - name: debian9-dns01
     image: debian:9
     groups: [dns01]
@@ -48,8 +46,6 @@ platforms:
     groups: [dns01]
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
   inventory:
     group_vars:
       http01:
@@ -79,5 +75,4 @@ scenario:
   name: default
 verifier:
   name: testinfra
-  lint:
-    name: flake8
+lint: 'molecule/lint.sh'
