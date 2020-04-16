@@ -8,15 +8,8 @@ trap catch ERR
 onexit() { exit $errors; }
 trap onexit EXIT
 
-#set -e
+#set -x
 
 yamllint .
-
-# adding "." to avoid warning over expectation of playbook.yml
-# ansible-lint
-ansible-lint .
-
-# explictly run on molecule playbooks, skipped otherwise
-ansible-lint molecule/*/*.yml
-
+ansible-lint
 flake8
