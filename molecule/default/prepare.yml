@@ -1,0 +1,8 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install cron for molecule based role testing
+      package:
+        name: cron
+        state: present

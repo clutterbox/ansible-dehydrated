@@ -1,9 +1,22 @@
 #!/bin/bash
 
+# NOTE: this assumes we are running in Travis or Vagrant,
+# so happily installs things globally, and with abandon.
+
 set -eo pipefail
 
+# if running in vagrant, `/vagrant` exists;
+# Then, setup local virtualenv and use it.
+if [ -d /vagrant ]; then
+  (cd ~; virtualenv -p python3 venv)
+  source ~/venv/bin/activate
+fi
+
 # Install molecule
-pip3 install "molecule>=2.22rc3" docker
+pip install "molecule>=3.0.3" testinfra docker
+
+# Install linting tools
+pip install yamllint ansible-lint flake8
 
 # Let's Encrypt CA (boulder)
 export GOPATH=~/gopath
