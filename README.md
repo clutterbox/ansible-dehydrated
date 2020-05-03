@@ -32,6 +32,7 @@ Variable | Function | Default
 --- | --- | ---
 dehydrated_accept_letsencrypt_terms | Set to yes to automatically register and accept Let's Encrypt terms | no
 dehydrated_contactemail | E-Mail address (required) |
+dehydrated_account_key | If set, deploy this file containing pre-registered private key |
 dehydrated_domains | List of domains to request SSL certificates for |
 dehydrated_deploycert | Script to run to deploy a certificate (see below) |
 dehydrated_wellknown | Directory where to deploy http-01 challenges |
@@ -56,6 +57,14 @@ dehydrated_repo_url | Specify URL to git repository of dehydrated | https://gith
 dehydrated_install_pip | Whether pip will be installed when using lexicon | yes
 dehydrated_pip_package | Name of pip package | python3-pip if ansible is running on python3, otherwise python-pip
 dehydrated_pip_executable | Name of pip executable to use | autodetected by pip module
+
+## Account registration
+
+The first time this role is used, and when `dehydrated_accept_letsencrypt_terms` is true, register with Let's Encrypt, using the value of `dehydrated_contactemail` (required).   Your account details, and private key, will be created by `dehydrated` and stored in `/etc/dehydrated/accounts/<HASH>` on the target system.
+
+Alternatively, if you've already setup `dehydrated` once and want to use the same account for all installations, copy your Lets' Encrypt private key (`account_key.pem`) into your ansible configuration, and set `dehydrated_account_key` to the name that file.  Subsequent installations will use that key instead of registering a **new** account.
+
+**IMPORTANT** The `account_key.pem` is a private key with no passphrase.  When you copy it into your Ansible configuration, make sure to use `ansible-vault` or similar to encrypt the contents of that file, at rest.  If you use `ansible-vault` to encrypt it, `ansible` will automatically decrypt when referenced and installed on the target system.
 
 ## Using dns-01 challenges
 

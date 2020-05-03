@@ -1,0 +1,34 @@
+---
+
+- name: Determine CA account key file location
+  set_fact:
+    ca_account_key_file: "/etc/dehydrated/accounts/{{ ((dehydrated_ca + '\n')|b64encode).rstrip('=').replace('+', '-').replace('/', '_') }}/account_key.pem"
+
+- name: Create CA account directory
+  file: dest="{{ ca_account_key_file | dirname }}" state=directory owner=root group=root mode=0700
+  when: dehydrated_account_key is defined
+
+- name: Deploy CA account key
+  copy:
+    src: "{{ dehydrated_account_key }}"
+    dest: "{{ ca_account_key_file }}"
+    owner: root
+    group: root
+    mode: 0600
+  when: dehydrated_account_key is defined
+  notify: update account details
+
+- name: Check if already registered
+  stat:
+    path: "{{ ca_account_key_file }}"
+  register: ca_stat
+
+- block:
+    - name: "assert dehydrated_accept_letsencrypt_terms is true"
+      assert:
+        that: dehydrated_accept_letsencrypt_terms
+
+    - name: Register to CA
+      command: "{{ dehydrated_install_root }}/dehydrated --register --accept-terms"
+  # \end block register
+  when: "not ca_stat.stat.exists or (ca_stat.stat.isreg is defined and not ca_stat.stat.isreg)"
