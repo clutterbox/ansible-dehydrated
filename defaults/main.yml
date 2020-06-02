@@ -9,6 +9,7 @@ dehydrated_update: yes
 dehydrated_version: HEAD
 dehydrated_challengetype: http-01
 dehydrated_lexicon_dns: {}
+#dehydrated_lexicon_dns_version: undefined # == latest
 dehydrated_key_algo: rsa
 dehydrated_keysize: 4096
 dehydrated_ca: "https://acme-v02.api.letsencrypt.org/directory"
