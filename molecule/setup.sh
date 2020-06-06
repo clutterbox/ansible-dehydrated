@@ -23,8 +23,10 @@ export GOPATH=~/gopath
 mkdir -p $GOPATH
 git clone https://github.com/letsencrypt/boulder/ $GOPATH/src/github.com/letsencrypt/boulder
 cd $GOPATH/src/github.com/letsencrypt/boulder
-jq '.va.dnsResolvers = ["10.77.77.1:53"]' test/config/va.json > test/config/va.json.new
-mv test/config/va.json.new test/config/va.json
+for f in va.json va-remote-a.json va-remote-b.json; do
+    jq '.va.dnsResolvers = ["10.77.77.1:53"]' test/config/$f > test/config/$f.new
+    mv test/config/$f.new test/config/$f
+done
 docker-compose up -d
 until curl -s http://127.0.0.1:4001/directory; do sleep 0.5; done
 cd -
