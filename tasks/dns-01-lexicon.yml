@@ -4,6 +4,22 @@
     name: "{{ dehydrated_pip_package }}"
   when: dehydrated_install_pip
 
+- name: Upgrade pip to latest version
+  pip:
+    name: pip
+    extra_args: --upgrade
+    executable: "{{ dehydrated_pip_executable|default(omit) }}"
+  when: dehydrated_pip_package is match("python-pip")
+
+- name: Install python2 dependencies
+  pip:
+    name: [
+      zipp==1.2.0,
+      setuptools==44.1.1
+    ]
+    executable: "{{ dehydrated_pip_executable|default(omit) }}"
+  when: dehydrated_pip_package is match("python-pip")
+
 - name: Ensure virtualenv is installed
   pip:
     name: virtualenv
