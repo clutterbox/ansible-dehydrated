@@ -41,6 +41,7 @@ Install, configure and run dehydrated Let's Encrypt client
 | dehydrated_version | Which version to check out from github | HEAD |
 | dehydrated_challengetype | Challenge to use (http-01, dns-01) | http-01 |
 | dehydrated_use_lexicon | Enable the use of lexicon | yes if dehydrated_challengetype == dns-01 else no |
+| dehydrated_lexicon_venv | Path to venv for lexicon | /opt/venvs/lexicon |
 | dehydrated_lexicon_dns | Options for running lexicon | {} |
 | dehydrated_hooks | Dict with hook-names for which to add scripts |
 | dehydrated_hook_scripts | Add additional scripts to hooks-Directory | [] |
