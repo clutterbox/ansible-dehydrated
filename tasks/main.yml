@@ -29,17 +29,7 @@
     group: root
     mode: 0600
 
-- name: Generate dehydrated domains.txt
-  lineinfile:
-    dest: /etc/dehydrated/domains.txt
-    line: "{{ item }}"
-    regexp: '^{{ item }}'
-    create: true
-    owner: root
-    group: root
-    mode: 0600
-  loop: "{{ dehydrated_domains }}"
-  notify: run dehydrated
+- import_tasks: domain_txt.yml
 
 - import_tasks: hooks.yml
 
