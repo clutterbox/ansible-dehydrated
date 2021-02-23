@@ -30,12 +30,15 @@
     mode: 0600
 
 - name: Generate dehydrated domains.txt
-  copy:
+  lineinfile:
     dest: /etc/dehydrated/domains.txt
-    content: "{{ dehydrated_domains }}"
+    line: "{{ item }}"
+    regexp: '^{{ item }}'
+    create: true
     owner: root
     group: root
     mode: 0600
+  loop: "{{ dehydrated_domains }}"
   notify: run dehydrated
 
 - import_tasks: hooks.yml
