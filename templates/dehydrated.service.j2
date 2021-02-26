@@ -7,5 +7,5 @@ OnFailure={{ dehydrated_systemd_timer_onfailure }}
 
 [Service]
 User=root
-ExecStart={{ dehydrated_install_root }}/dehydrated --cron
+ExecStart={{ dehydrated_renew_command }}
 Type=oneshot

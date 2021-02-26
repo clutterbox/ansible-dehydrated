@@ -47,13 +47,13 @@
   when:
     - dehydrated_use_lexicon
 
-- name: Install cronjob
+- name: Configure crontab
   cron:
     name: dehydrated-renew
     minute: "{{ 59|random(seed=inventory_hostname) }}"
     hour: "{{ 4|random(seed=inventory_hostname) }}"
     user: root
-    job: "{{ dehydrated_install_root }}/dehydrated -c"
+    job: "{{ dehydrated_renew_command }}"
     cron_file: dehydrated
     state: "{{ 'present' if dehydrated_cronjob else 'absent' }}"
 

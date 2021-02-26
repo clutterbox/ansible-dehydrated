@@ -5,6 +5,7 @@ dehydrated_dependencies:
   - curl
 dehydrated_repo_url: https://github.com/dehydrated-io/dehydrated.git
 dehydrated_install_root: /opt/dehydrated
+dehydrated_renew_command: "{{ dehydrated_install_root }}/dehydrated --cron"
 dehydrated_update: yes
 dehydrated_version: HEAD
 dehydrated_challengetype: http-01
