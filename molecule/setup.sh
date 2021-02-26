@@ -13,7 +13,7 @@ if [ -d /vagrant ]; then
 fi
 
 # Install molecule
-pip install "molecule>=3.0.3" testinfra docker
+pip install "molecule[ansible,docker,lint]" testinfra docker
 
 # Install linting tools
 pip install yamllint ansible-lint flake8
