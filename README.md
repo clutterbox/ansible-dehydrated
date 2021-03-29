@@ -74,7 +74,10 @@ When `dehydrated_challengetype` is set to `dns-01`, this role will automatically
 
 ### Platforms supporting `dns-01` challenges
 
-All platforms supported by this role will work with `dns-01` challenges, **except** for Debian 8 (codename: Jessie).  The `dns-lexicon` package requires Python version >= 3.5, which is not available by default on Debian 8.
+All platforms supported by this role will work with `dns-01` challenges wherever the latest version of `lexicon` can be installed.  `lexicon` is pretty aggressive about deprecating older versions of Python, and it (indirectly) relies upon the `cryptography` package which is similarly aggressive.  For those who need this on older distributions, it may be possible to find specific older versions of `lexicon` and `cryptography` to install that will work on the following distributions:
+
+  - Debian 8 (Jessie)
+  - Ubuntu 16.04 (Xenial)
 
 ## using systemd timers
 
@@ -246,7 +249,7 @@ If you decide, that you don't need the hook anymore, you can add `state: absent`
 
 # Testing
 
-This role is automatically tested using Travis CI. Local testing can be done using Vagrant. Both run `molecule/setup.sh` script to setup the testing environment.
+This role is automatically tested using Travis CI. Local testing can be done using Vagrant.  Both local (Vagrant) and Travis utilize the `molecule/setup.sh` script to setup the testing environment.
 
 Multiple services are started in the environment to test both http-01 and dns-01.
 
@@ -256,9 +259,9 @@ boulder (using docker) | Let's Encrypt CA for validations
 nginx | webserver for http-01
 powerdns | Used as a nameserver for dns-01. lexicon as a plugin to manipulate records.
 
-## Vagrant testing example
+## Local Vagrant testing example
 
-Assuming you have Vagrant already configured, run a complete test via Vagrant:
+Assuming you have Vagrant already configured, run a complete test via:
 
     vagrant up
     vagrant ssh
