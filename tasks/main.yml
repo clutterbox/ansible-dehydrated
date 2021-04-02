@@ -29,14 +29,7 @@
     group: root
     mode: 0600
 
-- name: Generate dehydrated domains.txt
-  copy:
-    dest: /etc/dehydrated/domains.txt
-    content: "{{ dehydrated_domains }}"
-    owner: root
-    group: root
-    mode: 0600
-  notify: run dehydrated
+- import_tasks: domain_txt.yml
 
 - import_tasks: hooks.yml
 
