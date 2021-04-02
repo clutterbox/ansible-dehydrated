@@ -151,8 +151,8 @@ TIMESTAMP | Timestamp when the  certificate was created.
     dehydrated_accept_letsencrypt_terms: yes
     dehydrated_contactemail: hostmaster@example.com
     dehydrated_wellknown: /var/www/example.com/.well-known/acme-challenge
-    dehydrated_domains: |
-      example.com
+    dehydrated_domains:
+      - example.com
     dehydrated_deploycert: |
       service nginx reload
   roles:
@@ -169,8 +169,8 @@ TIMESTAMP | Timestamp when the  certificate was created.
     dehydrated_lexicon_dns:
       LEXICON_CLOUDFLARE_USERNAME: hostmaster@example.com
       LEXICON_CLOUDFLARE_TOKEN: f7e7e...
-    dehydrated_domains: |
-      example.com
+    dehydrated_domains:
+      - example.com
     dehydrated_deploycert: |
       service nginx reload
   roles:
@@ -182,10 +182,10 @@ TIMESTAMP | Timestamp when the  certificate was created.
 - hosts: servers
   vars:
     # [...]
-    dehydrated_domains: |
-      example.com www.example.com
-      sub.example.com
-      service.example.com
+    dehydrated_domains:
+      - example.com www.example.com
+      - sub.example.com
+      - service.example.com
     dehydrated_deploycert:
       example.com: |
         service nginx reload

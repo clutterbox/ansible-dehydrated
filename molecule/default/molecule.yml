@@ -51,8 +51,8 @@ provisioner:
       http01:
         dehydrated_contactemail: notused@le2.wtf
         dehydrated_accept_letsencrypt_terms: true
-        dehydrated_domains: |
-          le2.wtf
+        dehydrated_domains:
+          - le2.wtf
         dehydrated_wellknown: /tmp/www/.well-known/acme-challenge
         dehydrated_use_lexicon: false
         dehydrated_ca: http://10.77.77.1:4001/directory
@@ -60,8 +60,8 @@ provisioner:
       dns01:
         dehydrated_contactemail: notused@le3.wtf
         dehydrated_accept_letsencrypt_terms: true
-        dehydrated_domains: |
-          le3.wtf
+        dehydrated_domains:
+          - le3.wtf
         dehydrated_challengetype: dns-01
         dehydrated_ca: http://10.77.77.1:4001/directory
         dehydrated_cronjob: false
