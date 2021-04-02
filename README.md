@@ -33,7 +33,7 @@ Variable | Function | Default
 dehydrated_accept_letsencrypt_terms | Set to yes to automatically register and accept Let's Encrypt terms | no
 dehydrated_contactemail | E-Mail address (required) |
 dehydrated_account_key | If set, deploy this file containing pre-registered private key |
-dehydrated_domains | List of domains to request SSL certificates for |
+dehydrated_domains | Content that will be written to domains.txt for obtaining certificates. See: https://github.com/dehydrated-io/dehydrated/blob/master/docs/domains_txt.md |
 dehydrated_deploycert | Script to run to deploy a certificate (see below) |
 dehydrated_wellknown | Directory where to deploy http-01 challenges |
 dehydrated_install_root | Where to install dehydrated | /opt/dehydrated
