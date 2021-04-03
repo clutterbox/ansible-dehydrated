@@ -2,3 +2,4 @@
 *.code-workspace
 .vagrant/
 *.log
+.cache

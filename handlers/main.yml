@@ -6,7 +6,7 @@
   command: "{{ dehydrated_install_root }}/dehydrated --account"
 
 - name: run dehydrated
-  command: "{{ dehydrated_install_root }}/dehydrated -c"
+  command: "{{ dehydrated_renew_command }}"
   when: dehydrated_run_on_changes
 
 - name: Reload systemd

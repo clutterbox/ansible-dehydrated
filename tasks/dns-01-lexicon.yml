@@ -7,6 +7,8 @@
 - name: Install dns-lexicon
   pip:
     name: dns-lexicon
+    version: "{{ dehydrated_lexicon_dns_version | d(omit) }}"
+    state: "{{ 'latest' if dehydrated_lexicon_dns_version is not defined else omit }}"
     executable: "{{ dehydrated_pip_executable|default(omit) }}"
 
 - name: Copy hook script
