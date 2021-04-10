@@ -14,6 +14,7 @@ dehydrated_keysize: 4096
 dehydrated_ca: "https://acme-v02.api.letsencrypt.org/directory"
 dehydrated_cronjob: yes
 dehydrated_use_lexicon: "{{ dehydrated_challengetype == 'dns-01' }}"
+dehydrated_lexicon_venv: "/opt/venvs/lexicon"
 dehydrated_run_on_changes: yes
 dehydrated_systemd_timer: no
 dehydrated_hook_scripts: []

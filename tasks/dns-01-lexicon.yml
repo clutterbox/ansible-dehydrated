@@ -4,10 +4,48 @@
     name: "{{ dehydrated_pip_package }}"
   when: dehydrated_install_pip
 
+- name: Upgrade pip to latest version
+  pip:
+    name: pip
+    extra_args: --upgrade
+    executable: "{{ dehydrated_pip_executable|default(omit) }}"
+  when: dehydrated_pip_package is match("python-pip")
+
+- name: Install python2 dependencies
+  pip:
+    name: [
+      zipp==1.2.0,
+      setuptools==44.1.1
+    ]
+    executable: "{{ dehydrated_pip_executable|default(omit) }}"
+  when: dehydrated_pip_package is match("python-pip")
+
+- name: Ensure virtualenv is installed
+  pip:
+    name: virtualenv
+    executable: "{{ dehydrated_pip_executable|default(omit) }}"
+
 - name: Install dns-lexicon
   pip:
     name: dns-lexicon
     executable: "{{ dehydrated_pip_executable|default(omit) }}"
+    virtualenv: "{{ dehydrated_lexicon_venv }}"
+
+- name: Link lexicon executables to /usr/local/bin
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    state: link
+  with_items:
+    - { src: "{{ dehydrated_lexicon_venv }}/bin/chardetect", dest: "{{ lexicon_path }}/chardetect" }
+    - { src: "{{ dehydrated_lexicon_venv }}/bin/futurize", dest: "{{ lexicon_path }}/futurize" }
+    - { src: "{{ dehydrated_lexicon_venv }}/bin/lexicon", dest: "{{ lexicon_path }}/lexicon" }
+    - { src: "{{ dehydrated_lexicon_venv }}/bin/pasteurize", dest: "{{ lexicon_path }}/pasteurize " }
+    - { src: "{{ dehydrated_lexicon_venv }}/bin/tldextract", dest: "{{ lexicon_path }}/tldextract" }
+  vars:
+    lexicon_path: '/usr/local/bin'
 
 - name: Copy hook script
   copy:
