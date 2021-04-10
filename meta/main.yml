@@ -1,6 +1,8 @@
 ---
 galaxy_info:
   author: Alexander Zielke
+  namespace: clutterbox
+  role_name: dehydrated
   description: Install, confgure and run dehydrated to get Let's Encrypt SSL certificates
 
   license: MIT

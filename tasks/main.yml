@@ -61,4 +61,5 @@
 
 - import_tasks: registration.yml
 
-- meta: flush_handlers
+- name: Flush handler to force dehydrated run now if neccessary
+  meta: flush_handlers

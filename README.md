@@ -28,36 +28,35 @@ Install, configure and run dehydrated Let's Encrypt client
 
 ## Role Variables
 
-| Variable | Function | Default |
-|:---|:---|:---|
-| dehydrated_accept_letsencrypt_terms | Set to yes to automatically register and accept Let's Encrypt terms | no |
-| dehydrated_contactemail | E-Mail address (required) |
-| dehydrated_account_key | If set, deploy this file containing pre-registered private key |
-| dehydrated_domains | List of domains to request SSL certificates for |
-| dehydrated_deploycert | Script to run to deploy a certificate (see below) |
-| dehydrated_wellknown | Directory where to deploy http-01 challenges |
-| dehydrated_install_root | Where to install dehydrated | /opt/dehydrated |
-| dehydrated_update | Update dehydrated sources on ansible run | yes |
-| dehydrated_version | Which version to check out from github | HEAD |
-| dehydrated_challengetype | Challenge to use (http-01, dns-01) | http-01 |
-| dehydrated_use_lexicon | Enable the use of lexicon | yes if dehydrated_challengetype == dns-01 else no |
-| dehydrated_lexicon_venv | Path to venv for lexicon | /opt/venvs/lexicon |
-| dehydrated_lexicon_dns | Options for running lexicon | {} |
-| dehydrated_hooks | Dict with hook-names for which to add scripts |
-| dehydrated_hook_scripts | Add additional scripts to hooks-Directory | [] |
-| dehydrated_key_algo | Keytype to generate (rsa, prime256v1, secp384r1) | rsa |
-| dehydrated_keysize | Size of Key (only for rsa Keys) | 4096 |
-| dehydrated_ca | CA to use | https://acme-v02.api.letsencrypt.org/directory |
-| dehydrated_cronjob | Install cronjob for certificate renewals | yes |
-| dehydrated_systemd_timer | Use systemd timer for certificate renewals | no |
-| dehydrated_config_extra | Add arbitrary text to config |
-| dehydrated_run_on_changes | If dehydrated should run if the list of domains changed | yes |
-| dehydrated_systemd_timer_onfailure | If set, an OnFailure-Directive will be added to the systemd unit |
-| dehydrated_cert_config | Override configuration for certificates | [] |
-| dehydrated_repo_url | Specify URL to git repository of dehydrated | https://github.com/dehydrated-io/dehydrated.git |
-| dehydrated_install_pip | Whether pip will be installed when using lexicon | yes |
-| dehydrated_pip_package | Name of pip package | python3-pip if ansible is running on python3, otherwise python-pip |
-| dehydrated_pip_executable | Name of pip executable to use | autodetected by pip module |
+Variable | Function | Default
+--- | --- | ---
+dehydrated_accept_letsencrypt_terms | Set to yes to automatically register and accept Let's Encrypt terms | no
+dehydrated_contactemail | E-Mail address (required) |
+dehydrated_account_key | If set, deploy this file containing pre-registered private key |
+dehydrated_domains | Content that will be written to domains.txt for obtaining certificates. See: https://github.com/dehydrated-io/dehydrated/blob/master/docs/domains_txt.md |
+dehydrated_deploycert | Script to run to deploy a certificate (see below) |
+dehydrated_wellknown | Directory where to deploy http-01 challenges |
+dehydrated_install_root | Where to install dehydrated | /opt/dehydrated
+dehydrated_update | Update dehydrated sources on ansible run | yes
+dehydrated_version | Which version to check out from github | HEAD
+dehydrated_challengetype | Challenge to use (http-01, dns-01) | http-01
+dehydrated_use_lexicon | Enable the use of lexicon | yes if dehydrated_challengetype == dns-01 else no
+dehydrated_lexicon_dns | Options for running lexicon | {}
+dehydrated_hooks | Dict with hook-names for which to add scripts |
+dehydrated_hook_scripts | Add additional scripts to hooks-Directory | []
+dehydrated_key_algo | Keytype to generate (rsa, prime256v1, secp384r1) | rsa
+dehydrated_keysize | Size of Key (only for rsa Keys) | 4096
+dehydrated_ca | CA to use | https://acme-v02.api.letsencrypt.org/directory
+dehydrated_cronjob | Install cronjob for certificate renewals | yes
+dehydrated_systemd_timer | Use systemd timer for certificate renewals | no
+dehydrated_config_extra | Add arbitrary text to config |
+dehydrated_run_on_changes | If dehydrated should run if the list of domains changed | yes
+dehydrated_systemd_timer_onfailure | If set, an OnFailure-Directive will be added to the systemd unit |
+dehydrated_cert_config | Override configuration for certificates | []
+dehydrated_repo_url | Specify URL to git repository of dehydrated | https://github.com/dehydrated-io/dehydrated.git
+dehydrated_install_pip | Whether pip will be installed when using lexicon | yes
+dehydrated_pip_package | Name of pip package | python3-pip if ansible is running on python3, otherwise python-pip
+dehydrated_pip_executable | Name of pip executable to use | autodetected by pip module
 
 ## Account registration
 
@@ -75,7 +74,10 @@ When `dehydrated_challengetype` is set to `dns-01`, this role will automatically
 
 ### Platforms supporting `dns-01` challenges
 
-All platforms supported by this role will work with `dns-01` challenges, **except** for Debian 8 (codename: Jessie).  The `dns-lexicon` package requires Python version >= 3.5, which is not available by default on Debian 8.
+All platforms supported by this role will work with `dns-01` challenges wherever the latest version of `lexicon` can be installed.  `lexicon` is pretty aggressive about deprecating older versions of Python, and it (indirectly) relies upon the `cryptography` package which is similarly aggressive.  For those who need this on older distributions, it may be possible to find specific older versions of `lexicon` and `cryptography` to install that will work on the following distributions:
+
+  - Debian 8 (Jessie)
+  - Ubuntu 16.04 (Xenial)
 
 ## using systemd timers
 
@@ -247,7 +249,7 @@ If you decide, that you don't need the hook anymore, you can add `state: absent`
 
 # Testing
 
-This role is automatically tested using Travis CI. Local testing can be done using Vagrant. Both run `molecule/setup.sh` script to setup the testing environment.
+This role is automatically tested using Travis CI. Local testing can be done using Vagrant.  Both local (Vagrant) and Travis utilize the `molecule/setup.sh` script to setup the testing environment.
 
 Multiple services are started in the environment to test both http-01 and dns-01.
 
@@ -257,9 +259,9 @@ boulder (using docker) | Let's Encrypt CA for validations
 nginx | webserver for http-01
 powerdns | Used as a nameserver for dns-01. lexicon as a plugin to manipulate records.
 
-## Vagrant testing example
+## Local Vagrant testing example
 
-Assuming you have Vagrant already configured, run a complete test via Vagrant:
+Assuming you have Vagrant already configured, run a complete test via:
 
     vagrant up
     vagrant ssh
