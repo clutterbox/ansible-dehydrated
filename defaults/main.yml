@@ -21,3 +21,4 @@ dehydrated_cert_config: []
 # dehydrated_systemd_timer_onfailure: some_unit.service
 dehydrated_install_pip: yes
 dehydrated_pip_package: "{{ 'python3-pip' if ansible_python_version is version('3', '>=') else 'python-pip' }}"
+dehydrated_certdir: /etc/dehydrated/certs

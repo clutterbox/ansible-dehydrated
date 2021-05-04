@@ -57,6 +57,7 @@ dehydrated_repo_url | Specify URL to git repository of dehydrated | https://gith
 dehydrated_install_pip | Whether pip will be installed when using lexicon | yes
 dehydrated_pip_package | Name of pip package | python3-pip if ansible is running on python3, otherwise python-pip
 dehydrated_pip_executable | Name of pip executable to use | autodetected by pip module
+dehydrated_certdir | Certificate directory | /etc/dehydrated/certs
 
 ## Account registration
 
