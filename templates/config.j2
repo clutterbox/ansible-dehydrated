@@ -13,4 +13,5 @@ HOOK=/etc/dehydrated/run-hooks.pl
 export {{ k }}={{ v }}
 {% endfor %}
 {% endif %}
+CERTDIR={{ dehydrated_certdir }}
 {{ dehydrated_config_extra|default("") }}
