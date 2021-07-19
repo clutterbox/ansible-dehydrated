@@ -106,6 +106,7 @@ dehydrated_cert_config:
    wellknown: # override WELLKNOWN (optional)
    key_algo: # override KEY_ALGO (optional)
    keysize: # override KEYSIZE (optional)
+   private_key_renew: # override PRIVATE_KEY_RENEW (optional)
 ```
 
 ## dehydrated_deploycert
