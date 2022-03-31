@@ -1,5 +1,7 @@
 [Unit]
 Description=ACME Cert renewal
+After=network-online.target
+Requires=network-online.target
 ConditionFileNotEmpty=/etc/dehydrated/domains.txt
 {% if dehydrated_systemd_timer_onfailure is defined %}
 OnFailure={{ dehydrated_systemd_timer_onfailure }}
